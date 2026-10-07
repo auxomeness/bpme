@@ -81,6 +81,14 @@ git pull --ff-only origin main
 git switch -c feature/add-login
 ```
 
+Right after cloning, `git branch` normally shows only `main`; that is expected. Run `git switch -c feature/add-login` while on `main` to create your local branch and switch to it. Confirm your current branch with:
+
+```bash
+git branch --show-current
+```
+
+It should print `feature/add-login`. The new branch starts from the current `main`; it does not change `main`. Your branch stays local until you push it with `git push -u origin feature/add-login`.
+
 Use a branch prefix that describes the work:
 
 | Prefix | Use for | Example |
@@ -107,6 +115,16 @@ git switch feature/add-login
 git merge main
 git stash pop
 ```
+
+What each command does:
+
+1. `git status` shows your current branch and which files have uncommitted changes.
+2. `git stash push -u -m "wip: add login"` saves your unfinished changes temporarily. `-u` includes untracked files, and `-m` adds a label so you can identify the stash.
+3. `git switch main` switches to your local `main` branch. Stashing first leaves the working tree clean so the switch can happen safely.
+4. `git pull --ff-only origin main` fetches the latest `main` from the remote named `origin` and fast-forwards local `main`. `--ff-only` stops if Git cannot update it without creating a merge commit.
+5. `git switch feature/add-login` switches back to your feature branch. Replace this example with your branch name.
+6. `git merge main` brings the updated local `main` changes into the feature branch you are currently on.
+7. `git stash pop` reapplies your saved unfinished changes to the feature branch and removes that stash entry if it applies successfully.
 
 Resolve any merge or stash conflicts, then run `npm run lint`, `npm test`, and `npm run build`. If `git stash pop` reports conflicts, resolve them and check `git status`; Git keeps the stash entry when applying it fails. You can also commit a small WIP commit on your feature branch instead of stashing when you want the unfinished work saved in Git.
 
