@@ -49,6 +49,13 @@ The backend runs at `http://localhost:3000`; the Vite app runs at `http://localh
 
 Environment files are optional for local defaults. To customize settings, copy `backend/.env.example` to `backend/.env` and `frontend/.env.example` to `frontend/.env` (PowerShell: use `Copy-Item backend/.env.example backend/.env` and `Copy-Item frontend/.env.example frontend/.env`).
 
+### If `npm ci` fails
+
+1. Check the installed versions with `node --version` and `npm --version`. Use Node.js 20.19 or newer and npm 10 or newer.
+2. If the error says `package.json` and `package-lock.json` are out of sync, do not work around it by switching everyone to `npm install`. On a branch, run `npm install` after an intentional dependency change, review the changes to both package files, and commit them. Then retry `npm ci`.
+3. If npm reports a network or registry error, check the internet connection and run `npm ping`, then retry `npm ci`.
+4. If the error persists, save the complete error output and share it with the project team before changing the lockfile or clearing npm's cache.
+
 ## Scripts
 
 | Command | Purpose |
