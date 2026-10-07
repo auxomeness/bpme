@@ -57,12 +57,17 @@ Run a workspace by itself with `npm run dev --workspace backend` or `npm run dev
 node-react-boilerplate/
 ├── backend/
 │   ├── src/
-│   │   ├── controllers/     # Handle HTTP requests and responses
-│   │   ├── models/          # Database schemas/models (optional)
-│   │   │   └── README.md    # Notes on adding MongoDB later
-│   │   ├── routes/          # Define API paths and connect them to controllers
-│   │   ├── services/        # Hold business rules and application logic
-│   │   ├── validators/      # Check incoming request data
+│   │   ├── controllers/
+│   │   │   └── controller.js         # HTTP request/response handling
+│   │   ├── models/
+│   │   │   ├── model.js               # Optional persistence model starting point
+│   │   │   └── README.md              # Notes on adding MongoDB later
+│   │   ├── routes/
+│   │   │   └── routes.js              # API route definitions
+│   │   ├── services/
+│   │   │   └── service.js             # Business logic
+│   │   ├── validators/
+│   │   │   └── validator.js           # Request data validation
 │   │   └── server.js        # Configure and start the Express server
 │   ├── .env.example         # Backend environment variable template
 │   └── package.json         # Backend dependencies and commands
@@ -91,7 +96,7 @@ When you add an API feature, keep each layer focused:
 4. **Service** implements the feature's business rules. It can call a model when persistence is needed.
 5. **Model** defines how application data is stored and retrieved. MongoDB models belong here if MongoDB is selected.
 
-The `routes/`, `controllers/`, `services/`, and `validators/` folders are empty placeholders. `models/` contains a short note about adding database support later. The starter has no API routes, sample business logic, or active database connection.
+The starter files contain short TODO comments and no feature implementation. Add your application code directly to these files, then split them into resource-specific files as the project grows. There are no registered API routes, sample business rules, or active database connections yet.
 
 ### Frontend purpose
 
