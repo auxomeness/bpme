@@ -31,6 +31,15 @@ If those commands pass, the project is ready. During the exam, start both apps w
 
 ## Get started
 
+Clone the repository and enter the project folder:
+
+```bash
+git clone <repository-url>
+cd node-react-boilerplate
+```
+
+Then install dependencies and run both apps:
+
 ```bash
 npm ci
 npm run dev
@@ -50,6 +59,90 @@ Environment files are optional for local defaults. To customize settings, copy `
 | `npm test` | Run workspace tests; succeeds when no tests have been added yet |
 
 Run a workspace by itself with `npm run dev --workspace backend` or `npm run dev --workspace frontend`.
+
+## Git collaboration workflow
+
+Everyone creates their own working branch from the latest `main`. Do not commit project work directly to `main`.
+
+### Start a task
+
+After cloning, or before starting a new task, update `main` and create a descriptive branch:
+
+```bash
+git switch main
+git pull --ff-only origin main
+git switch -c feature/add-login
+```
+
+Use a branch prefix that describes the work:
+
+| Prefix | Use for | Example |
+| --- | --- | --- |
+| `feature/` | New behavior | `feature/add-login` |
+| `fix/` | Bug fixes | `fix/cors-origin` |
+| `docs/` | Documentation | `docs/setup-guide` |
+| `refactor/` | Code changes without intended behavior changes | `refactor/backend-config` |
+| `test/` | Adding or changing tests | `test/login-validation` |
+| `chore/` | Maintenance and tooling | `chore/update-dependencies` |
+
+Use lowercase kebab-case, keep names short and specific, and add a ticket number if the team uses one (for example, `feature/123-add-login`).
+
+### Update `main` without losing unfinished work
+
+If you have uncommitted changes on your feature branch and need the latest remote `main`, stash tracked and untracked work first. Replace the example branch with your branch name:
+
+```bash
+git status
+git stash push -u -m "wip: add login"
+git switch main
+git pull --ff-only origin main
+git switch feature/add-login
+git merge main
+git stash pop
+```
+
+Resolve any merge or stash conflicts, then run `npm run lint`, `npm test`, and `npm run build`. If `git stash pop` reports conflicts, resolve them and check `git status`; Git keeps the stash entry when applying it fails. You can also commit a small WIP commit on your feature branch instead of stashing when you want the unfinished work saved in Git.
+
+### Commit naming
+
+Use a short Conventional Commit style subject: a lowercase type, a colon, and a concise description. Write the description as an action and omit the final period.
+
+```text
+feat: add login route
+fix: handle missing request body
+docs: explain branch workflow
+refactor: separate app configuration
+test: cover login validation
+chore: update development dependencies
+```
+
+Keep each commit focused on one related change. Do not commit `.env` files, credentials, `node_modules/`, or generated build output.
+
+### Open a pull request
+
+Push your branch and open a pull request with `main` as the base branch:
+
+```bash
+git push -u origin feature/add-login
+```
+
+On the repository host, create a pull request from your branch into `main`. Use a clear title, summarize what changed and why, list the checks you ran, and link the related issue or task. Mark the pull request as a draft while it is still in progress. Before requesting review, run:
+
+```bash
+npm run lint
+npm test
+npm run build
+```
+
+Address review feedback on the same branch, push the updates, and wait for the required approvals and checks before merging. Follow the repository's merge settings.
+
+## Code comments
+
+- Explain why a non-obvious decision exists; avoid comments that merely repeat what the code already says.
+- Keep comments close to the code they describe, and update or remove them when behavior changes.
+- Make TODO comments actionable, such as `// TODO: Reject expired tokens before authorizing the request.`
+- Do not leave commented-out code in a pull request; Git history keeps old implementations.
+- Add a short JSDoc comment to exported functions only when their purpose, inputs, or side effects are not clear from the code.
 
 ## Project structure
 
@@ -96,7 +189,7 @@ When you add an API feature, keep each layer focused:
 4. **Service** implements the feature's business rules. It can call a model when persistence is needed.
 5. **Model** defines how application data is stored and retrieved. MongoDB models belong here if MongoDB is selected.
 
-The starter files contain short TODO comments and no feature implementation. Add your application code directly to these files, then split them into resource-specific files as the project grows. There are no registered API routes, sample business rules, or active database connections yet.
+The starter files contain valid JavaScript modules and short TODO stubs. The empty router is mounted under `/api`, so the Express app is ready for routes but exposes no feature endpoints yet. Add application code directly to these files, then split them into resource-specific files as the project grows. There are no sample business rules or active database connections.
 
 ### Frontend purpose
 
